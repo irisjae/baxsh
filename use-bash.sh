@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
-f-ls () { 
-	ls -1 --group-directories-first $1; 
+function lls { 
+	ls -1 --group-directories-first ${@}
+}
+
+function vvim {
+	vim "+set shortmess=I" "+color murphy" "+set nowrap" ${@}
 }
