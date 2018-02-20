@@ -4,7 +4,7 @@ function lls {
 }
 
 function vvim {
-	vim "+set shortmess=I" "+color murphy" "+set nowrap" "${@}"
+	vim "+set shortmess=I" "+color murphy" "+set nowrap" "+set autoindent" "${@}"
 }
 
 __screen_config=$(mktemp)
