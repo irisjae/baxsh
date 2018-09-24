@@ -1,14 +1,58 @@
 #!/usr/bin/env bash
-function lls { 
-	ls -1 --group-directories-first "${@}"
-}
 
+#export LANG=C
+
+__vvis_exec=$(mktemp)
+cat << 'EOF' > ${__vvis_exec}
+#!/usr/bin/env bash
+TERM="" exec vis "+set autoindent" \
+	"${@}"
+EOF
+chmod +x "${__vvis_exec}"
+function vxis {
+	"${__vvis_exec}" "${@}" ;}
+
+__vvim_exec=$(mktemp)
+cat << 'EOF' > ${__vvim_exec}
+#!/usr/bin/env bash
+exec vim "+set shortmess=I" "+color murphy" "+set nowrap" "+set linebreak" \
+	"+set autoindent" "+set hlsearch" "+noremap * *N<Esc>" "+noh" \
+	"${@}"
+EOF
+chmod +x "${__vvim_exec}"
 function vvim {
-	vim "+set shortmess=I" "+color murphy" "+set nowrap" "+set autoindent" "${@}"
-}
+	"${__vvim_exec}" "${@}" ;}
 
-__screen_config=$(mktemp)
-echo "layout save default" > ${__screen_config}
-function sscreen {
-	screen -c "$__screen_config" "${@}"
-}
+#__screen_config=$(mktemp)
+#cat << 'EOF' > ${__screen_config}
+#layout save default
+#EOF
+#function sscreen {
+#	screen -c "$__screen_config" "${@}" ;}
+
+__bbash_exec=$(mktemp)
+cat << 'EOF' > ${__bbash_exec}
+#!/usr/bin/env bash
+exec bash --init-file <(echo ". ~/.bashrc; . ~/jay/use-bash.sh;") "${@}"
+EOF
+chmod +x "${__bbash_exec}"
+function bbash {
+	"${__bbash_exec}" "${@}" ;}
+
+__dxvtm_exec=$(mktemp)
+cat << EOF > ${__dxvtm_exec}
+#!/usr/bin/env bash
+DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM=rxvt exec dvtm -m ^a -s <(exit) "${@}"
+EOF
+chmod +x "${__dxvtm_exec}"
+function dxvtm {
+	"${__dxvtm_exec}" "${@}" ;}
+
+function aabduco {
+	ABDUCO_CMD="${__dxvtm_exec}" abduco \
+		"${@}" ;}
+
+export EDITOR="${__vvim_exec}"
+
+#. ~/.nvm/nvm.sh --no-use
+. ~/.nvm/nvm.sh

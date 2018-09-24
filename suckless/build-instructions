@@ -1,0 +1,13 @@
+dvtm:
+- sudo apt-get install build-essentials
+- sudo apt-get install libncurses5-dev libncursesw5-dev (is this an old version?)
+- $EDITOR config.mk && $EDITOR config.def.h && make && sudo make install
+
+abduco:
+- dvtm
+- ./configure && make && sudo make install
+
+vis:
+- libtermkey; download from http://www.leonerd.org.uk/code/libtermkey/, then sudo make install
+- sudo ldconfig
+- ./configure && make && sudo make install
