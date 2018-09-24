@@ -33,7 +33,7 @@ function vvim {
 __bbash_exec=$(mktemp)
 cat << 'EOF' > ${__bbash_exec}
 #!/usr/bin/env bash
-exec bash --init-file <(echo ". ~/.bashrc; . ~/jay/use-bash.sh;") "${@}"
+exec bash --init-file <(echo ". ~/.bashrc; . ~/.baxsh;") "${@}"
 EOF
 chmod +x "${__bbash_exec}"
 function bbash {
