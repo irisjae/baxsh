@@ -15,13 +15,14 @@ function vxis {
 __vvim_exec=$(mktemp)
 cat << 'EOF' > ${__vvim_exec}
 #!/usr/bin/env bash
-exec vim "+set shortmess=I" "+color murphy" "+set nowrap" "+set linebreak" \
+exec vim "+set shortmess=I" "+color industry" "+set nowrap" "+set linebreak" \
 	"+set autoindent" "+set hlsearch" "+noremap * *N<Esc>" "+noh" \
 	"${@}"
 EOF
 chmod +x "${__vvim_exec}"
 function vvim {
 	"${__vvim_exec}" "${@}" ;}
+EDITOR="${__vvim_exec}"
 
 #__screen_config=$(mktemp)
 #cat << 'EOF' > ${__screen_config}
@@ -42,7 +43,7 @@ function bbash {
 __dxvtm_exec=$(mktemp)
 cat << EOF > ${__dxvtm_exec}
 #!/usr/bin/env bash
-DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM=rxvt exec dvtm -m ^a -s <(exit) "${@}"
+DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM="$TERM" exec dvtm -m '^ ' -s <(exit) "${@}"
 EOF
 chmod +x "${__dxvtm_exec}"
 function dxvtm {
