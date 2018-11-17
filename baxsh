@@ -56,4 +56,4 @@ function aabduco {
 export EDITOR="${__vvim_exec}"
 
 #. ~/.nvm/nvm.sh --no-use
-. ~/.nvm/nvm.sh
+[ -f ~/.nvm/nvm.sh ] && . ~/.nvm/nvm.sh
