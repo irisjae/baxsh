@@ -43,7 +43,7 @@ function bbash {
 __dxvtm_exec=$(mktemp)
 cat << EOF > ${__dxvtm_exec}
 #!/usr/bin/env bash
-DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM="$TERM" exec dvtm -m '^ ' -s <(exit) "${@}"
+DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM="${TERM%-256color}" exec dvtm -m '^ ' -s <(exit) "${@}"
 EOF
 chmod +x "${__dxvtm_exec}"
 function dxvtm {
