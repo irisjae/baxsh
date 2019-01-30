@@ -5,7 +5,7 @@
 } && {
 	cd ~
 } && which dvtm || {
-	sudo apt-get install build-essentials
+	sudo apt-get install build-essential
 	sudo apt-get install libncurses5-dev libncursesw5-dev
 	git clone https://github.com/martanne/dvtm.git
 	pushd dvtm
