@@ -16,7 +16,7 @@ __vvim_exec=$(mktemp)
 cat << 'EOF' > ${__vvim_exec}
 #!/usr/bin/env bash
 exec vim "+set shortmess=I" "+color industry" "+set nowrap" "+set linebreak" \
-	"+set autoindent" "+set hlsearch" "+noremap * *N<Esc>" "+noh" \
+	"+set term=ansi" "+set autoindent" "+set hlsearch" "+noremap * *N<Esc>" "+noh" \
 	"${@}"
 EOF
 chmod +x "${__vvim_exec}"
