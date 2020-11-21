@@ -5,8 +5,8 @@
 } && {
 	cd ~
 } && which dvtm || {
-	sudo apt-get install build-essential
-	sudo apt-get install libncurses5-dev libncursesw5-dev
+	sudo apt-get install -y build-essential
+	sudo apt-get install -y libncurses5-dev libncursesw5-dev
 	git clone https://github.com/martanne/dvtm.git
 	pushd dvtm
 	$EDITOR config.mk && $EDITOR config.def.h && make && sudo make install
@@ -25,8 +25,8 @@
 	echo 'failed getting abduco' >&2
 	exit 1
 } && which vis || {
-	sudo apt-get install libtermkey-dev
-	sudo apt-get install liblua5.3-dev
+	sudo apt-get install -dev libtermkey-dev
+	sudo apt-get install -dev liblua5.3-dev
 	git clone https://github.com/martanne/vis.git
 	pushd vis
 	./configure && make && sudo make install

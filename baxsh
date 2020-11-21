@@ -12,12 +12,27 @@ chmod +x "${__vvis_exec}"
 function vxis {
 	"${__vvis_exec}" "${@}" ;}
 
+__vvimrc=$(mktemp)
+cat << 'EOF' > ${__vvimrc}
+set shortmess=I
+set nowrap
+set softtabstop=0 noexpandtab
+set linebreak
+set autoindent
+set hlsearch
+noremap * *N
+command -range Y '<,'>w! ~/__
+command P r ~/__
+colorscheme industry
+syntax on
+noh
+EOF
+chmod +r "${__vvimrc}"
+
 __vvim_exec=$(mktemp)
-cat << 'EOF' > ${__vvim_exec}
+cat << EOF > ${__vvim_exec}
 #!/usr/bin/env bash
-exec vim "+set shortmess=I" "+color industry" "+set nowrap" "+set linebreak" \
-	"+set term=ansi" "+set autoindent" "+set hlsearch" "+noremap * *N<Esc>" "+noh" \
-	"${@}"
+TERM="\$TERM" vim -S "${__vvimrc}" "\${@}"
 EOF
 chmod +x "${__vvim_exec}"
 function vvim {
