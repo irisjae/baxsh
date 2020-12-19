@@ -17,9 +17,12 @@ cat << 'EOF' > ${__vvimrc}
 set shortmess=I
 set nowrap
 set softtabstop=0 noexpandtab
+set tabstop=8
+set shiftwidth=8
 set linebreak
 set autoindent
 set hlsearch
+set term=builtin_ansi
 noremap * *N
 command -range Y '<,'>w! ~/__
 command P r ~/__
@@ -58,7 +61,7 @@ function bbash {
 __dxvtm_exec=$(mktemp)
 cat << EOF > ${__dxvtm_exec}
 #!/usr/bin/env bash
-DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM="${TERM%-256color}" exec dvtm -m '^ ' -s <(exit) "${@}"
+DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM="$TERM" exec dvtm -m '^ ' -s <(exit) "${@}"
 EOF
 chmod +x "${__dxvtm_exec}"
 function dxvtm {
