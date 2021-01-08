@@ -58,20 +58,39 @@ chmod +x "${__bbash_exec}"
 function bbash {
 	"${__bbash_exec}" "${@}" ;}
 
+__dvtm_editor=$(mktemp)
+cat << EOF > ${__dvtm_editor}
+#!/usr/bin/env bash
+#EDITOR="${__vvim_exec}" cat "\${2}" | vipe -
+${__vvim_exec} "+set nofixendofline" "+set noeol" "\${2}"
+EOF
+chmod +x "${__dvtm_editor}"
+EDITOR="${__dvtm_editor}"
+
 __dxvtm_exec=$(mktemp)
 cat << EOF > ${__dxvtm_exec}
 #!/usr/bin/env bash
-DVTM_EDITOR="${__vvim_exec}" SHELL="${__bbash_exec}" DVTM_TERM="$TERM" exec dvtm -m '^ ' -s <(exit) "${@}"
+DVTM_EDITOR="${__dvtm_editor}" SHELL="${__bbash_exec}" DVTM_TERM="$TERM" exec dvtm -m '^ ' -s <(exit) "${@}"
 EOF
 chmod +x "${__dxvtm_exec}"
 function dxvtm {
 	"${__dxvtm_exec}" "${@}" ;}
 
+# current seesion is $(abduco | grep '*' | sed 's/\s\+/ /g' | cut -d' ' -f 6)
+# try to prevent connect own session
 function aabduco {
 	ABDUCO_CMD="${__dxvtm_exec}" abduco \
 		"${@}" ;}
 
 export EDITOR="${__vvim_exec}"
+
+function __inject {
+	perl -e 'ioctl(STDIN, 0x5412, $_) for split "", join " ", @ARGV' "$@" ;}
+function pp {
+	__value="$(cat ~/__)"
+	__inject "$__value" ;}
+
+bind -x '"\C-^":"pp"'
 
 #. ~/.nvm/nvm.sh --no-use
 [ -f ~/.nvm/nvm.sh ] && . ~/.nvm/nvm.sh
