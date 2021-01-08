@@ -23,6 +23,7 @@ set linebreak
 set autoindent
 set hlsearch
 set term=builtin_ansi
+set shellredir=&>
 noremap * *N
 command -range Y '<,'>w! ~/__
 command P r ~/__
