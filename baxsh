@@ -25,6 +25,9 @@ set hlsearch
 set term=builtin_ansi
 set shellredir=&>
 noremap * *N
+noremap & Y`<Pgv!
+noremap K xGopkdgg
+noremap gs .:silent !sleep 0.08ngs
 command -range Y '<,'>w! ~/__
 command P r ~/__
 colorscheme industry
