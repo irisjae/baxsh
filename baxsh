@@ -24,14 +24,15 @@ set autoindent
 set hlsearch
 set term=builtin_ansi
 set shellredir=&>
+map gs .:silent !sleep 0.08nzzgs
 noremap * *N
 noremap & Y`<Pgv!
 noremap K xGopkdgg
-noremap gs .:silent !sleep 0.08ngs
+noremap QPQ :q!
 command -range Y '<,'>w! ~/__
 command P r ~/__
-colorscheme industry
 syntax on
+colorscheme industry
 noh
 EOF
 chmod +r "${__vvimrc}"
@@ -62,14 +63,39 @@ chmod +x "${__bbash_exec}"
 function bbash {
 	"${__bbash_exec}" "${@}" ;}
 
+
+__dvvimrc=$(mktemp)
+cat << 'EOF' > ${__dvvimrc}
+set shortmess=I
+set nowrap
+set softtabstop=0 noexpandtab
+set tabstop=8
+set shiftwidth=8
+set linebreak
+set autoindent
+set hlsearch
+set term=builtin_ansi
+set shellredir=&>
+set nofixendofline
+set noeol
+map gs .:silent !sleep 0.08nzzgs
+noremap * *N
+noremap & Y`<Pgv!
+noremap K xGopkdgg
+noremap QPQ :q!
+command -range Y '<,'>w! ~/__
+command P r ~/__
+colorscheme industry
+noh
+EOF
+chmod +r "${__dvvimrc}"
+
 __dvtm_editor=$(mktemp)
 cat << EOF > ${__dvtm_editor}
 #!/usr/bin/env bash
-#EDITOR="${__vvim_exec}" cat "\${2}" | vipe -
-${__vvim_exec} "+set nofixendofline" "+set noeol" "\${2}"
+TERM="\$TERM" vim -S "${__dvvimrc}" "\${2}"
 EOF
 chmod +x "${__dvtm_editor}"
-EDITOR="${__dvtm_editor}"
 
 __dxvtm_exec=$(mktemp)
 cat << EOF > ${__dxvtm_exec}
