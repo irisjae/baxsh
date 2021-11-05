@@ -76,16 +76,19 @@ set autoindent
 set hlsearch
 set term=builtin_ansi
 set shellredir=&>
+set completeopt+=longest
+set nowrapscan
 set nofixendofline
 set noeol
 map gs .:silent !sleep 0.08nzzgs
+map gd @q:silent !sleep 0.08nzzgd
 noremap * *N
 noremap & Y`<Pgv!
 noremap K xGopkdgg
 noremap QPQ :q!
 command -range Y '<,'>w! ~/__
 command P r ~/__
-colorscheme industry
+colorscheme desert
 noh
 EOF
 chmod +r "${__dvvimrc}"
@@ -114,13 +117,16 @@ function aabduco {
 
 export EDITOR="${__vvim_exec}"
 
-function __inject {
+function __keystroke {
 	perl -e 'ioctl(STDIN, 0x5412, $_) for split "", join " ", @ARGV' "$@" ;}
-function pp {
+function __keystroke_paste {
 	__value="$(cat ~/__)"
-	__inject "$__value" ;}
+	__keystroke "$__value" ;}
 
-bind -x '"\C-^":"pp"'
+bind -x '"\C-O": "__keystroke_paste"'
+#bind -x '"\C-_": "echo -en "\e[?25h"'
+bind -x '"\C-_": "__keystroke while read f\; do vvim -o \"\$f\" \< /dev/tty\; done"'
+bind -x '"\C-^": "__keystroke git grep --untracked"'
 
 #. ~/.nvm/nvm.sh --no-use
 [ -f ~/.nvm/nvm.sh ] && . ~/.nvm/nvm.sh
