@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 #export LANG=C
 
 __vvis_exec=$(mktemp)
@@ -24,7 +22,12 @@ set autoindent
 set hlsearch
 set term=builtin_ansi
 set shellredir=&>
+set completeopt+=longest
+set nowrapscan
 map gs .:silent !sleep 0.08nzzgs
+map gd @q:silent !sleep 0.08nzzgd
+map gy xVpgv:Yu
+map gp :let @z = join(readfile(expand("~/__")), "\n")gv"zp
 noremap * *N
 noremap & Y`<Pgv!
 noremap K xGopkdgg
@@ -32,15 +35,16 @@ noremap QPQ :q!
 command -range Y '<,'>w! ~/__
 command P r ~/__
 syntax on
-colorscheme industry
+colorscheme desert
 noh
+syntax keyword javaScriptCommentTodo WIP NOW soon someday eventually gradually
 EOF
 chmod +r "${__vvimrc}"
 
 __vvim_exec=$(mktemp)
 cat << EOF > ${__vvim_exec}
 #!/usr/bin/env bash
-TERM="\$TERM" vim -S "${__vvimrc}" "\${@}"
+TERM="\$TERM" exec vim -S "${__vvimrc}" "\${@}"
 EOF
 chmod +x "${__vvim_exec}"
 function vvim {
@@ -82,13 +86,16 @@ set nofixendofline
 set noeol
 map gs .:silent !sleep 0.08nzzgs
 map gd @q:silent !sleep 0.08nzzgd
+map gy xVpgv:Yu
+map gp :let @z = join(readfile(expand("~/__")), "\n")gv"zp
 noremap * *N
 noremap & Y`<Pgv!
 noremap K xGopkdgg
 noremap QPQ :q!
 command -range Y '<,'>w! ~/__
 command P r ~/__
-colorscheme desert
+syntax off
+colorscheme industry
 noh
 EOF
 chmod +r "${__dvvimrc}"
