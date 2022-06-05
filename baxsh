@@ -125,7 +125,7 @@ function aabduco {
 export EDITOR="${__vvim_exec}"
 
 function __keystroke {
-	perl -e 'ioctl(STDIN, 0x5412, $_) for split "", join " ", @ARGV' "$@" ;}
+	perl -e 'ioctl(STDIN, 0x5412, $_) for split "", join " ", @ARGV' -- "$@" ;}
 function __keystroke_paste {
 	__value="$(cat ~/__)"
 	__keystroke "$__value" ;}
