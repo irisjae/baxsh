@@ -1,8 +1,7 @@
 sudo apt-get update
 sudo apt-get install build-essential imagemagick libjpeg62 libjpeg62-dev
-wget https://www.imagemagick.org/download/ImageMagick.tar.gz
-tar xf ImageMagick.tar.gz
-cd ImageMagick-7*
+git clone https://github.com/ImageMagick/ImageMagick.git
+cd ImageMagick
 ./configure
 make
 sudo make install
