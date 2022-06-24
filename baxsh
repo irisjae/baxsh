@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 #export LANG=C
 
 __vvis_exec=$(mktemp)
@@ -24,7 +22,12 @@ set autoindent
 set hlsearch
 set term=builtin_ansi
 set shellredir=&>
+set completeopt+=longest
+set nowrapscan
 map gs .:silent !sleep 0.08nzzgs
+map gd @q:silent !sleep 0.08nzzgd
+map gy xVpgv:Yu
+map gp :let @z = join(readfile(expand("~/__")), "\n")gv"zp
 noremap * *N
 noremap & Y`<Pgv!
 noremap K xGopkdgg
@@ -32,15 +35,16 @@ noremap QPQ :q!
 command -range Y '<,'>w! ~/__
 command P r ~/__
 syntax on
-colorscheme industry
+colorscheme desert
 noh
+syntax keyword javaScriptCommentTodo WIP NOW soon someday eventually gradually
 EOF
 chmod +r "${__vvimrc}"
 
 __vvim_exec=$(mktemp)
 cat << EOF > ${__vvim_exec}
 #!/usr/bin/env bash
-TERM="\$TERM" vim -S "${__vvimrc}" "\${@}"
+TERM="\$TERM" exec vim -S "${__vvimrc}" "\${@}"
 EOF
 chmod +x "${__vvim_exec}"
 function vvim {
@@ -76,15 +80,21 @@ set autoindent
 set hlsearch
 set term=builtin_ansi
 set shellredir=&>
+set completeopt+=longest
+set nowrapscan
 set nofixendofline
 set noeol
 map gs .:silent !sleep 0.08nzzgs
+map gd @q:silent !sleep 0.08nzzgd
+map gy xVpgv:Yu
+map gp :let @z = join(readfile(expand("~/__")), "\n")gv"zp
 noremap * *N
 noremap & Y`<Pgv!
 noremap K xGopkdgg
 noremap QPQ :q!
 command -range Y '<,'>w! ~/__
 command P r ~/__
+syntax off
 colorscheme industry
 noh
 EOF
@@ -114,13 +124,16 @@ function aabduco {
 
 export EDITOR="${__vvim_exec}"
 
-function __inject {
-	perl -e 'ioctl(STDIN, 0x5412, $_) for split "", join " ", @ARGV' "$@" ;}
-function pp {
+function __keystroke {
+	perl -e 'ioctl(STDIN, 0x5412, $_) for split "", join " ", @ARGV' -- "$@" ;}
+function __keystroke_paste {
 	__value="$(cat ~/__)"
-	__inject "$__value" ;}
+	__keystroke "$__value" ;}
 
-bind -x '"\C-^":"pp"'
+bind -x '"\C-O": "__keystroke_paste"'
+#bind -x '"\C-_": "echo -en "\e[?25h"'
+bind -x '"\C-_": "__keystroke while read f\; do vvim -o \"\$f\" \< /dev/tty\; done"'
+bind -x '"\C-^": "__keystroke git grep --untracked"'
 
 #. ~/.nvm/nvm.sh --no-use
 [ -f ~/.nvm/nvm.sh ] && . ~/.nvm/nvm.sh
